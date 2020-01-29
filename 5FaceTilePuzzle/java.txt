@@ -1,0 +1,257 @@
+"use strict"; 
+
+/* Name: Matthew Heger
+   Class: CSC 337 
+   Date: 2/20/2019
+   This is the Javascript file for the Fifteen Piece Puzzle */
+
+(function() { //This is the main function of the whole code 
+
+    let down = false;
+    let prevX = 0;
+    let prevY = 0;
+    let emptySquareX = 3; //row of empty square 
+    let emptySquareY = 3; //column of empty square
+    let zCount = 1;
+
+    window.onload = function() { //This function begins after all of the HTML of the page is loaded 
+    let PuzzleArea = document.getElementById("puzzlearea");   //Set Size and position style of puzzle container 
+    let ShuffleButton = document.getElementById("shufflebutton"); 
+
+
+    PuzzleArea.style.margin = "auto"; 
+    PuzzleArea.style.width = "400px"; 
+    PuzzleArea.style.height = "400px"; 
+    PuzzleArea.style.position = "relative"; 
+   
+    let x = 0;  //Horizontal position of piece 
+    let y = 0;  //Vertical position of piece 
+
+    for(let i = 1; i < 16; i++) {  
+    let Piece = document.createElement("div");  
+    Piece.className = "PuzzlePiece"; 
+    Piece.style.height = "90px"; 
+    Piece.style.width = "90px"; 
+    Piece.style.position = "absolute"; 
+    Piece.style.paddingTop = "0px"; 
+    Piece.style.margin = "0px"; 
+    
+    Piece.style.fontSize = "40pt"; 
+    Piece.style.textAlign = "center"; 
+    Piece.innerHTML = i; 
+    
+
+    Piece.style.left = x + "px"; 
+    Piece.style.top = y + "px"; 
+
+    Piece.style.backgroundImage = "url('1puzz.jpg')";  //Set Background Image and Position within the tile
+    Piece.style.backgroundPositionX = -x + "px";   //offset of image is inverted compared to position of tile. 
+    Piece.style.backgroundPositionY = -y + "px"; 
+
+    let x1 = x/100; 
+    let y1 = y/100; 
+
+    Piece.id =  x1 + "" + y1; 
+
+    x = x + 100;  //Shift new piece to the right 100px 
+
+    if((i % 4) == 0) {  //When the end of a row is reached, x position reset, and move down 100px in y direction
+         x = 0; 
+         y = y + 100; 
+    }
+
+
+    Piece.onmouseover = MouseOver; 
+    Piece.onmouseout = MouseOut; 
+   // Piece.onmousemove = MouseMove; 
+    Piece.onmousedown = MouseDown; 
+    Piece.onmouseup = MouseUp; 
+
+    Piece.style.border = "5px solid black"
+    PuzzleArea.appendChild(Piece); 
+    console.log("new"); 
+    ShuffleButton.onclick = Shuffle;
+    }
+    }
+
+    function Shuffle() {
+    console.log("Shuffle"); 
+
+    for(let i = 0; i < 1000; i++) {
+    let randomN = 0; 
+    let NoBottom = false; 
+    let NoTop = false; 
+    let NoRight = false; 
+    let NoLeft = false; 
+    let Exit = true; 
+    let SAD = 0; 
+
+    
+    if(emptySquareY == 3) {   //These if statements check all edge cases for the algorithm 
+        NoBottom = true;     //In this case the empty square has no bottom neighbor if posY == 3
+    }
+    if(emptySquareY == 0) {
+         NoTop = true; 
+    }
+    if(emptySquareX == 0) {
+         NoLeft = true; 
+    }
+    if(emptySquareX == 3) {
+         NoRight = true; 
+    }
+    
+
+    while(Exit) { 
+    randomN = parseInt(Math.random() * 4); 
+    console.log(randomN); 
+    if(randomN == 0) {     
+      if(NoTop == false){
+      Exit = false; 
+     }
+     }    
+    if(randomN == 1) {
+       if(NoRight == false) {
+        Exit = false; 
+       }
+    }
+    if(randomN == 2) {
+       if(NoBottom == false) {
+        Exit = false; 
+       }
+     }
+     if(randomN == 3) {
+        if(NoLeft == false) {
+        Exit = false; 
+        }
+     }}
+
+     if(randomN == 0) {   //Move Top piece down 
+     let MovingPiece = document.getElementById("" + emptySquareX + (emptySquareY - 1)); 
+     let NewY = parseInt(MovingPiece.id[1]) + 1; 
+     MovingPiece.id = MovingPiece.id[0] + NewY; 
+     MovingPiece.style.top = parseInt(MovingPiece.style.top) + 100 + "px"; 
+     emptySquareY = emptySquareY - 1; 
+     }
+     if(randomN == 1) {   //Move Right piece to the left
+     let MovingPiece = document.getElementById("" + (emptySquareX + 1) + emptySquareY); 
+     let NewX = parseInt(MovingPiece.id[0]) - 1; 
+     MovingPiece.id = NewX + MovingPiece.id[1]; 
+     MovingPiece.style.left = parseInt(MovingPiece.style.left) - 100 + "px"; 
+     emptySquareX = emptySquareX + 1; 
+     }
+     if(randomN == 2) {   //Move Bottom piece up
+     let MovingPiece = document.getElementById("" + emptySquareX  + (emptySquareY + 1)); 
+     let NewY = parseInt(MovingPiece.id[1]) - 1; 
+     MovingPiece.id = MovingPiece.id[0] + NewY; 
+     MovingPiece.style.top = parseInt(MovingPiece.style.top) - 100 + "px"; 
+     emptySquareY = emptySquareY + 1; 
+     }
+     if(randomN == 3) {  //Move left piece to the right 
+     let MovingPiece = document.getElementById("" + (emptySquareX - 1)  + emptySquareY); 
+     let NewX = parseInt(MovingPiece.id[0]) + 1; 
+     MovingPiece.id = NewX + MovingPiece.id[1]; 
+     MovingPiece.style.left = parseInt(MovingPiece.style.left) + 100 + "px"; 
+     emptySquareX = emptySquareX - 1; 
+     }
+     console.log(emptySquareX); 
+     console.log(emptySquareY); 
+     }
+    }
+
+
+    function MouseDown(event) {
+
+     let NoBottom = false; 
+     let NoTop = false; 
+     let NoRight = false; 
+     let NoLeft = false; 
+     let SAD = 0; 
+ 
+     if(emptySquareY == 3) {   //These if statements check all edge cases for the algorithm 
+          NoBottom = true;     //In this case the empty square has no bottom neighbor if posY == 3
+     }
+     if(emptySquareY == 0) {
+          NoTop = true; 
+     }
+     if(emptySquareX == 0) {
+          NoLeft = true; 
+     }
+     if(emptySquareX == 3) {
+          NoRight = true; 
+     }
+     
+     SAD = Math.abs(emptySquareX - parseInt(this.id[0])) + Math.abs(emptySquareY - parseInt(this.id[1])); 
+
+     console.log(this.id);
+     console.log(emptySquareX); 
+     console.log(emptySquareY); 
+     console.log(NoTop); 
+
+     console.log(SAD); 
+     if(!NoTop && (this.id[1] == (emptySquareY - 1)) && (SAD == 1)) {  //Check if piece is Valid Top Neighbor
+     console.log("inside"); 
+     this.style.top = parseInt(this.style.top) + 100 + "px";  //Move to the bottom 
+     emptySquareY = emptySquareY - 1; 
+     let NewY = parseInt(this.id[1]) + 1; 
+     this.id = this.id[0] + NewY; 
+     }
+     else if(!NoBottom && (this.id[1] == (emptySquareY + 1)) && (SAD == 1)) {  //Check if piece is Valid Bottom Neighbor
+     this.style.top = parseInt(this.style.top) - 100 + "px";  //Move piece to the top
+     emptySquareY = emptySquareY + 1; 
+     let NewY = parseInt(this.id[1]) - 1; 
+     this.id = this.id[0] + NewY; 
+     }
+     else if(!NoLeft && (this.id[0] == (emptySquareX - 1)) && (SAD == 1)) {  //Check if piece is Valid Left Neighbor
+     this.style.left = parseInt(this.style.left) + 100 + "px";  //Move piece to the right
+     emptySquareX = emptySquareX - 1; 
+     let NewX = parseInt(this.id[0]) + 1; 
+     this.id = NewX + this.id[1]; 
+     }
+     else if(!NoRight && (this.id[0] == (emptySquareX + 1)) && (SAD == 1)) {  //Check if piece is Valid Right Neighbor
+     this.style.left = parseInt(this.style.left) - 100 + "px";   //Move piece to the left
+     emptySquareX = emptySquareX + 1; 
+     let NewX = parseInt(this.id[0]) - 1; 
+     this.id = NewX + this.id[1]; 
+     }
+
+	down = true;
+     console.log("down");
+     }
+
+     function MouseUp() {
+     down = false; 
+     }
+
+    function MouseOver(){
+    this.style.borderColor = "red"; 
+    this.style.color = "red"; 
+    console.log("Over"); 
+    }
+
+    function MouseOut(){
+    this.style.color = "black"; 
+    this.style.borderColor = "black"; 
+    console.log("out"); 
+    }
+
+    function MouseMove(event){
+     if(down){
+          console.log(event.clientY);
+        //  if(parseInt(this.style.top) <= 300) {  
+
+          console.log(this.id[0]);
+          console.log(this.id[1]);
+
+		let dy = event.clientY- prevY;
+          prevY = event.clientY;
+          this.style.top = parseInt(this.style.top) + dy + "px"; // }
+         // if(parseInt(this.style.left) <= 300) { 
+          let dx = event.clientX - prevX;
+          prevX = event.clientX;
+          this.style.left = parseInt(this.style.left) + dx + "px"; // }
+          
+         }
+    console.log("move"); 
+    }
+
+    }) ();

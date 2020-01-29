@@ -1,0 +1,69 @@
+/* Name: Matthew Heger
+    Class: CSC 337 
+   Date: 3/30/2019
+   This is the Javascript file for the chatit CSC 337 Assignment  */
+
+   "use strict"; 
+   (function() { 
+        let id; 
+
+        window.onload = function() {
+        let go1 = document.getElementById("go1"); 
+        let go2 = document.getElementById("go2");
+        
+
+        go1.onclick = FetchMovies; 
+        go2.onclick = FetchBacon; 
+        
+        };
+
+        function FetchMovies() {
+        let FirstName = document.getElementById("firstname1").value; 
+        let LastName = document.getElementById("lastname1").value; 
+        
+        let url = "http://localhost:3000?first=" + FirstName + "&last=" + LastName + "&mode=1";
+
+        fetch(url) //Start fetching description for description mode 
+        .then(checkStatus)
+        .then(function (responseText) {
+        console.log(responseText); 
+        id = responseText; 
+        })
+        .catch(function(error) {
+        
+        }); 
+        } 
+
+        function FetchBacon() {
+            let FirstName = document.getElementById("firstname2").value; 
+            let LastName = document.getElementById("lastname2").value; 
+
+            let url = "http://localhost:3000?first=" + FirstName + "&last=" + LastName  + "&mode=2";
+
+            fetch(url) //Start fetching description for description mode 
+            .then(checkStatus)
+            .then(function (responseText) {
+            console.log(responseText); 
+            
+            })
+            .catch(function(error) {
+            
+            }); 
+            
+        }
+             /**
+     //this function for the statuschek
+     */
+        function checkStatus(response) {    //Checks for errors on the page 
+        if (response.status >= 200 && response.status < 300) {  
+            return response.text();
+        }else if(response.status == 404) {    //404 error when there is no data
+            return Promise.reject(new Error("sorry we do not have any data"));
+        }else {     
+            return Promise.reject(new Error(response.status+": "+response.statusText)); 
+        } 
+        }
+  
+    
+   }) ();
+   

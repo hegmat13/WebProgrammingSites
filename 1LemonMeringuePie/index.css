@@ -1,0 +1,26 @@
+body {
+margin: 7em;
+
+}
+
+h1 {
+text-align: center; 
+color: orangered; 
+font-size: 70pt; 
+font-family: serif; 
+background-color: gainsboro; 
+}
+
+.Song {
+text-align: left; 
+font-size: 30pt; 
+}
+
+h2 { 
+font-size: 25pt; 
+}
+
+.image { 
+width: 50%; 
+height: 50%; 
+}

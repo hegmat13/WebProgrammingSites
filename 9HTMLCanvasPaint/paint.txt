@@ -1,0 +1,296 @@
+"use strict"; 
+
+(function() { 
+    let penradius = 1; 
+    let pencolor = "black"; 
+    let mouseflag = false; 
+    let resetflag = false; 
+    let stop = false; 
+    let previous = ""; 
+    let AnimationRequest; 
+
+    window.onload = function() {
+
+        let canvas = document.getElementById("canvas");
+        let pensize = document.getElementById("pensize");
+        let plus = document.getElementById("plus");
+        let minus = document.getElementById("minus");
+        let pencontext = canvas.getContext("2d");
+        let penbutton = document.getElementById("pen");
+        let circlebutton = document.getElementById("circles");
+        let linebutton = document.getElementById("lines");
+        let squarebutton = document.getElementById("squares");
+
+        pencontext.fillStyle = "white";
+        pencontext.fillRect(0, 0, canvas.width, canvas.height);
+
+        let colorgradient = document.getElementById("gradient");
+        let context = colorgradient.getContext("2d"); 
+        colorgradient.onclick = ColorGradient1; 
+
+        colorgradient = context.createLinearGradient(0,0,100,0);
+        colorgradient.addColorStop(0, "rgb(255, 0, 0)");
+        colorgradient.addColorStop(0.15, "rgb(255, 0, 255)");
+        colorgradient.addColorStop(0.33, "rgb(0, 0, 255)");
+        colorgradient.addColorStop(0.49, "rgb(0, 255, 255)");
+        colorgradient.addColorStop(0.67, "rgb(0, 255, 0)");
+        colorgradient.addColorStop(0.84, "rgb(255, 255, 0)");
+        colorgradient.addColorStop(1, "rgb(255, 0, 0)");
+
+        context.fillStyle = colorgradient;
+        context.fillRect(0,0,100,100);
+
+        colorgradient = context.createLinearGradient(0,0,0,100);
+        colorgradient.addColorStop(0, "rgb(255, 255, 255, 1)");
+        colorgradient.addColorStop(0.5, "rgb(255, 255, 255, 0)");
+        colorgradient.addColorStop(0.5, "rgb(0, 0, 0, 0)");
+        colorgradient.addColorStop(1, "rgb(0, 0, 0, 1)");
+
+        context.fillStyle = colorgradient;
+        context.fillRect(0,0,100,100);
+
+        let pencontext1 = pensize.getContext("2d"); 
+        pencontext1.fillStyle = "white"; 
+        pencontext1.fillRect(0, 0, pensize.height, pensize.width); 
+
+        pencontext1.beginPath();
+        pencontext1.arc(25, 25, penradius, 0, 2*Math.PI);
+        pencontext1.stroke();
+        
+
+        plus.onclick = Plus; 
+        minus.onclick = Minus; 
+        penbutton.onclick = PenStart;  
+        circlebutton.onclick = CircleStart; 
+        linebutton.onclick = LineStart; 
+        squarebutton.onclick = SquareStart; 
+        
+    };
+
+    function ColorGradient1(event) {
+        let colorgradient = document.getElementById("gradient");    
+        let context = colorgradient.getContext("2d"); 
+        let pixelData = context.getImageData(event.offsetX, event.offsetY, 100, 100);
+        pencolor = "rgb(" + pixelData.data[0] + ", " + pixelData.data[1] + ", " + pixelData.data[2] + ")"; 
+        console.log(pixelData); 
+        console.log(pencolor); 
+    }
+
+    function Plus() {
+        if (penradius < 25) {
+        penradius = penradius + 1; 
+
+        let pensize = document.getElementById("pensize");
+        let pencontext = pensize.getContext("2d"); 
+        
+        pencontext.fillStyle = "black";
+        pencontext.beginPath();
+        pencontext.arc(25, 25, penradius, 0, 2*Math.PI);
+        pencontext.stroke();
+        pencontext.fill(); 
+        }
+    }
+
+    function Minus() {
+        if (penradius > 1) { 
+        penradius = penradius - 1;
+
+        let pensize = document.getElementById("pensize");
+        let pencontext = pensize.getContext("2d"); 
+
+        pencontext.fillStyle = "white"; 
+        pencontext.fillRect(0, 0, pensize.height, pensize.width);
+        
+        pencontext.fillStyle = "black";
+        pencontext.beginPath();
+        pencontext.arc(25, 25, penradius, 0, 2*Math.PI);
+        pencontext.stroke();
+        pencontext.fill(); 
+        }
+    }
+    function PenStart() {
+        previous = "Pen"; 
+        Pen(); 
+    }
+    function Pen() {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        canvas.onmousedown = MouseDown;
+        canvas.onmouseup = MouseUp; 
+
+        
+        if (mouseflag == true) {
+        window.addEventListener("mousemove", DrawLine);
+        }
+        else {
+        resetflag = false; 
+        window.removeEventListener("mousemove", DrawLine); 
+        }
+        if (previous == "Pen") {
+        AnimationRequest = requestAnimationFrame(Pen);
+        }
+    }
+     
+    function DrawLine(event) {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+
+        if (resetflag == false) {
+        pencontext.moveTo(event.offsetX, event.offsetY);     
+        }
+        else { 
+        console.log(pencolor); 
+        pencontext.strokeStyle = pencolor; 
+        pencontext.lineTo(event.offsetX, event.offsetY);
+        pencontext.stroke();
+        Pen(); 
+        }
+        resetflag = true; 
+    }
+
+    function CircleStart(){
+        previous = "Circle"; 
+        Circle(); 
+    }
+
+    function Circle() { 
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        canvas.onmousedown = MouseDown;
+        canvas.onmouseup = MouseUp; 
+
+        if (mouseflag == true) {
+        window.addEventListener("mousemove", DrawCircle);
+        }
+        else {
+        window.removeEventListener("mousemove", DrawCircle); 
+        }
+
+        if (previous == "Circle") {
+        AnimationRequest = requestAnimationFrame(Circle);
+        //console.log("Circle"); 
+        }
+        /*
+        else {
+        cancelAnimationFrame(AnimationRequest); 
+        }*/
+    }
+
+    function DrawCircle(event) {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        pencontext.strokeStyle = pencolor; 
+        pencontext.beginPath();
+        pencontext.arc(event.offsetX, event.offsetY, penradius, 0, 2*Math.PI);
+        pencontext.stroke();
+        Circle(); 
+    }
+
+    function LineStart(){
+        previous = "Line"
+        Line(); 
+    }
+
+    function Line() {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        canvas.onmousedown = MouseDown;
+        canvas.onmouseup = MouseUp; 
+
+        if (mouseflag == true) {
+        window.addEventListener("mousemove", DrawLines);
+        }
+        else {
+        window.removeEventListener("mousemove", DrawLines); 
+        }
+
+        if(previous == "Line") {
+        AnimationRequest = requestAnimationFrame(Line);
+        }      
+    }
+
+    function DrawLines() {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        pencontext.strokeStyle = pencolor; 
+
+        pencontext.moveTo(0,0); 
+        pencontext.lineTo(event.offsetX, event.offsetY);
+        pencontext.stroke();
+        Line(); 
+    }
+
+    function SquareStart() {
+        previous = "Square"; 
+        Square(); 
+    }
+
+    function Square() {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        canvas.onmousedown = MouseDown;
+        canvas.onmouseup = MouseUp; 
+
+        if (mouseflag == true) {
+        window.addEventListener("mousemove", DrawSquares);
+        }
+        else {
+        window.removeEventListener("mousemove", DrawSquares); 
+        }
+
+        if(previous == "Square") {
+        AnimationRequest = requestAnimationFrame(Square);
+        }      
+    }
+
+    function DrawSquares(event) {
+        let canvas = document.getElementById("canvas");
+        let pencontext = canvas.getContext("2d");
+        console.log("Drawing"); 
+        pencontext.fillStyle = pencolor; 
+        //pencontext.beginPath();
+        pencontext.fillRect(event.offsetX, event.offsetY, penradius, penradius); 
+        //pencontext.stroke(); 
+        Square(); 
+    }
+
+    function MouseDown(event) {
+        mouseflag = true;
+    }
+    function MouseUp() {
+        mouseflag = false; 
+    }
+
+    /**
+
+    //function for fetching from the server
+
+    */
+
+    function fetchfunction(){ 
+
+    }
+
+     /**
+
+     //this function goes one when tha page is loading
+
+     */
+
+    function POSTfunction() { 
+
+    }
+
+    /**
+
+     //given function for checkstatus
+
+    */
+
+    function checkStatus(response) {   
+
+     
+
+}  
+
+}) ();

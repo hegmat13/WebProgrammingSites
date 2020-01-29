@@ -1,0 +1,89 @@
+/* Name: Matthew Heger
+   Hw8 bestreads .js service file*/
+   "use strict";
+   const express = require("express");
+   const app = express();
+   let fs = require('fs');
+   
+   const bodyParser = require('body-parser');
+   const jsonParser = bodyParser.json();
+   
+   
+   app.use(function(req, res, next) {
+       res.header("Access-Control-Allow-Origin", "*");
+       res.header("Access-Control-Allow-Headers", 
+                  "Origin, X-Requested-With, Content-Type, Accept");
+       next();
+   });
+   
+   app.use(express.static('public'));
+   
+   function readFile(fileName) { 
+	let file = 0;
+	try {  
+	    file = fs.readFileSync(fileName, 'utf8');
+	    //console.log(file);    
+	} catch(e) {
+	   // console.log('Error:', e.stack);
+	}
+	return file;
+}
+
+function buildJson(line) {
+    line = line.split("\n");
+    let array = []; 
+    let data = {}; 
+
+
+    for(let i = 0; i < line.length; i++){
+    let splitline =  line[i].split(":::"); 
+    let comment = {}; 
+    comment["name"] = splitline[0]; 
+    comment["comment"] = splitline[1]; 
+    array.push(comment); 
+    }	
+
+    data["messages"] = array; 
+
+	return data; 
+}   
+   console.log('web service started');
+   
+   app.post('/', jsonParser, function (req, res) {
+       res.header("Access-Control-Allow-Origin", "*");
+       let whole = req.body;
+       let name = req.body.Name;
+       let comment = req.body.Comment;
+       let message = name + ":::" + comment + "/n";
+     //  console.log(whole); 
+    //   console.log(name);
+     //  console.log(comment);
+   //  console.log(code);
+    
+   
+       fs.appendFile("message.txt", message, function(err) {
+           if(err) {
+               console.log(err);
+               res.status(400);
+           }
+           console.log("The file was saved!");
+           res.send("Success!");
+       });
+   
+       
+   })
+
+   app.get('/', function (req, res) {
+   res.header("Access-Control-Allow-Origin", "*");
+
+   let File = readFile("message.txt"); 
+   let Content = buildJson(File);
+  
+   console.log(Content); 
+
+   //console.log(JSON.stringify(line)); 
+   //res.send(JSON.stringify(line));  //Sends info as a string 
+    res.send(JSON.stringify(Content)); 
+   }) 
+   
+   app.listen(3000); //Specifie the port number 

@@ -1,0 +1,219 @@
+// CSC 337 Project 8 Book Review
+// Provided web service that fetches All book information 
+// Name: Matthew Heger
+// Class: CSC 337 
+// Date: 3/19/2019
+// 
+
+const express = require("express");
+const app = express();
+var fs = require('fs');
+
+app.use(express.static('public'));
+
+// reads data asynchronously fromt the passed in file name
+// returns the contents of the file as a string
+function read_file(file_name) {
+	var file = 0;
+	try {  
+	    file = fs.readFileSync(file_name, 'utf8');
+	    console.log(file);    
+	} catch(e) {
+	    console.log('Error:', e.stack);
+	}
+	return file;
+}
+
+//Split the info based on the newline character 
+//Return info at specified index
+
+/*
+function split_info(info, index) {
+	var lines = info.split("\n");''
+	var line = ""; 
+	line = lines[index];
+	return line;
+}*/ 
+
+// builds a JSON representation of the district data
+// containing a state element and a districts element that stores
+// a list of lists where each inner list contains the democratic votes and then the 
+// republican votes from a district.
+// takes a line of data as a parameter
+// returns this JSON.
+
+
+function build_jsoninfo(line) {
+	line = line.split("\n");
+
+	var data = {}; 
+
+	data["title"] = line[0]; 
+	data["author"] = line[1]; 
+	data["stars"] = line[2]; 
+	
+	return data
+}
+
+function build_jsontitle(line) {
+	line = line.split("\n");
+
+	return line[0]; 
+}
+
+function build_jsonreview(line) {
+	line = line.split("\n");
+
+	var data = {};
+
+	data["name"] = line[0]; 
+	data["stars"] = line[1]; 
+	data["review"] = line[2]; 
+
+	return data; 
+}   
+
+
+
+
+console.log('web service started');
+app.get('/', function (req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+	
+	var infoindex = 0; //Get the Title
+
+	var book = req.query.title;
+	var mode = req.query.mode;
+	var file_name = ""; 
+	var EntireFile; 
+
+	console.log(book); 
+	console.log(mode); 
+
+	// returns an error if one of the parameters is missing
+	if(book == undefined || mode == undefined) {
+		res.status(410);
+		res.send("Missing required parameters");
+	}
+
+	if (mode == "reviews") {
+		file_name = "books/" + book + "/review.txt";
+	}
+	
+
+
+	if(mode == "info") {
+		file_name = "books/" + book + "/" + mode + ".txt";
+		EntireFile = read_file(file_name); 
+		line = build_jsoninfo(EntireFile);
+
+		console.log(JSON.stringify(line)); 
+		res.send(JSON.stringify(line)); 
+	} 
+	else if(mode == "description") {
+		file_name = "books/" + book + "/" + mode + ".txt";
+		EntireFile = read_file(file_name); 
+		res.send(EntireFile); 
+	}
+	else if(mode == "reviews") {
+		var files = fs.readdirSync('./books/' + book);
+		var reviews = {}; 
+		var reviewArray = [];
+				//console.log('File Name: ' + files[i] 
+				console.log(files[3]); 
+				for(var j = 0; j < files.length - 3; j++){
+					file_name = "books/" + book + "/" + files[j + 3]; 
+					EntireFile = read_file(file_name); 
+
+					line = build_jsonreview(EntireFile); 
+					reviewArray[j] = line; 
+				}
+				reviews["reviews"] = reviewArray; 
+
+				console.log(JSON.stringify(reviews)); 
+				res.send(JSON.stringify(reviews)); 
+	}
+
+	else if(mode == "books") {
+		var bookArray = []; 
+		var booklist = {}; 
+		
+		var files = fs.readdirSync('./books/');
+
+		console.log(files[0]); 
+
+		for(var j = 0; j < files.length; j++){
+			file_name = "books/" + files[j] + "/info.txt";
+			EntireFile = read_file(file_name); 
+
+			line = build_jsontitle(EntireFile); 
+			var title = {}; 
+			title["title"] = line;
+			title["folder"] = files[j]; 
+
+			bookArray.push(title); 
+
+			console.log(bookArray); 
+			//bookArray[j] = title; 
+		} 
+		j = 0; 
+		booklist["books"] = bookArray; 
+
+		console.log(JSON.stringify(booklist)); 
+		res.send(JSON.stringify(booklist)); 
+	}
+})
+
+app.listen(3000);
+
+// reads data asynchronously fromt he passed in file name
+// returns the contents of the file as a string
+
+/*
+function read_file(file_name) {
+	var districts = 0;
+	try {  
+	    districts = fs.readFileSync(file_name, 'utf8');
+	    console.log(districts);    
+	} catch(e) {
+	    console.log('Error:', e.stack);
+	}
+	return districts;
+}
+
+// builds a JSON representation of the district data
+// containing a state element and a districts element that stores
+// a list of lists where each inner list contains the democratic votes and then the 
+// republican votes from a district.
+// takes a line of data as a parameter
+// returns this JSON.
+function build_json(line) {
+	line = line.split(",");
+	var data = {"state":line[0]}
+	var lis = [];
+	var ind = 0;
+	for (var i = 1; i < line.length; i += 3) {
+		lis[ind] = [parseInt(line[i + 1]), parseInt(line[i + 2])];
+		ind += 1;
+	}
+	data["districts"] = lis;
+	return data
+}
+
+// takes a string with all state data as a parameter
+// splits it into individual lines and then returns the line that contains
+// the passed in state name as its first element. 
+// returns an empty string if it doesn't find the state.
+function find_line(districts, state) {
+	var lines = districts.split("\n");
+	var line = "";
+	for (var i = 0; i < lines.length; i++) {
+		if(lines[i].toLowerCase().includes(state.toLowerCase())){
+			line = lines[i];
+		}
+	}
+	return line;
+} */ 
+
+
+

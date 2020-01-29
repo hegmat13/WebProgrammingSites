@@ -1,0 +1,146 @@
+/* Name: Matthew Heger
+   Class: CSC 337 
+   Date: 3/13/2019
+   This is the Javascript file for the GerryMandering CSC 337 Assignment  */
+
+
+(function() { //This is the main function of the whole code 
+    let flag = 0; 
+
+    window.onload = function() { 
+
+
+        let search = document.getElementById("search"); 
+        search.onclick = Search; 
+    }
+
+    function checkStatus(response) { 
+        if (response.status >= 200 && response.status < 300) {  
+            return response.text();
+        // special reject message for page not found
+        } else if(response.status == 404) {
+            return Promise.reject(new Error("sorry we do not have any data"));
+        } else {  
+            return Promise.reject(new Error(response.status+": "+response.statusText)); 
+        } 
+    }
+    
+    function Search(){
+        if (flag == 1) {
+            document.getElementById("statedata").innerHTML = ""; 
+        }
+
+        let StateName = document.getElementById("box").value; 
+
+        var url = "http://localhost:3000?state=" + StateName + "&type=voters";
+           fetch(url)
+            .then(checkStatus)
+            .then(TotalVoters = function(responseText) {
+                console.log(responseText); 
+                flag = 1; 
+                let TotalVoters = responseText;
+                let total = document.createElement("h4"); 
+                total.innerHTML = TotalVoters + " eligible voters"; 
+                document.getElementById("voters").appendChild(total); 
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+
+        
+        var url = "http://localhost:3000?state=" + StateName + "&type=districts";
+        fetch(url)
+            .then(checkStatus)
+            .then(function(responseText) {
+                let dem = 0; 
+                let rep = 0; 
+                let demwasted = 0; 
+                let repwasted = 0; 
+                let party = ""; 
+                let per = 0; 
+                let winning = 0; 
+                let bluep = 0; 
+                let redp = 0; 
+
+                json = JSON.parse(responseText);
+                
+                let StateName = document.getElementById("box").value; 
+                let state = document.createElement("h2"); 
+                state.innerHTML = json["state"]; 
+        
+                document.getElementById("statename").appendChild(state); 
+
+                for(let i = 0; i < json["districts"].length; i++){
+                    console.log(1); 
+                    dem = json["districts"][i][0]; 
+                    rep = json["districts"][i][1]; 
+                    bluep = (dem/ (dem + rep))*100; 
+                    console.log(bluep); 
+                    redp = 100 - bluep; 
+
+                    winning = (Math.floor((dem + rep)/2) + 1); 
+
+                    if(dem > rep) {
+                        demwasted += Math.abs((winning - dem)); 
+                        repwasted += rep; 
+                    }
+                    else {
+                        demwasted += dem; 
+                        repwasted += Math.abs((winning - rep)); 
+                    }
+
+                    let District = document.createElement("div"); 
+                    District.id = "bars"; 
+                    
+                    let newDemDistrict = document.createElement("div"); 
+                    newDemDistrict.style.display = "inline-block";  //OLD
+                    newDemDistrict.className = "dem"; 
+                    newDemDistrict.style.width = bluep + "%"; 
+
+                    District.appendChild(newDemDistrict);  //OLD
+
+                    let newRepDistrict = document.createElement("div"); 
+                    newRepDistrict.style.display = "inline-block";  //OLD
+                    newRepDistrict.className = "gop"; 
+                    newRepDistrict.style.width = redp + "%";    //OLD
+
+                  // newRepDistrict.appendChild(newDemDistrict); //NEW
+                    District.appendChild(newRepDistrict); //OLD
+
+                    document.getElementById("statedata").appendChild(District); //OLD
+
+                   // document.getElementById("statedata").appendChild(newRepDistrict); //NEW
+                }
+                per = Math.abs(demwasted - repwasted)/(demwasted + repwasted); 
+                
+                if(demwasted > repwasted) {  
+                    party = "Republican Party";
+                }
+                else {
+                    party = "Democratic Party"; 
+                }
+
+                if (per >= 0.07) {
+                    let gerry = document.createElement("h3"); 
+                    gerry.innerHTML = "Gerrymandered to favor the " + party; 
+                    document.getElementById("statename").appendChild(gerry); 
+                }
+                else {
+                    let gerry = document.createElement("h3"); 
+                    gerry.innerHTML = "Not Gerry Mandered"; 
+                    document.getElementById("statename").appendChild(gerry); 
+                }
+                
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+       
+       
+       
+
+
+
+    }
+}) ();

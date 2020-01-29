@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<!--Name: Matthew Heger
+   Class: CSC 337 
+   Date: 2/13/2019
+   This is the HTML file for the Speed Reader  -->
+<!--  -->
+
+<html lang = "en-us">
+	<head>
+		<title>Speed Reader</title>
+
+		<meta charset="utf-8" />
+        <link href="speedreader.css" type="text/css" rel="stylesheet" />
+        <script src = "speedreader.js" ></script>
+	</head>
+
+    <body> 
+        <h1> SpeedReader </h1> 
+
+        <input id = "Word"> 
+
+        <div id = "controls">   <!-- Main Control Section -->
+            <fieldset id = "PlayControls">  
+                <legend> <strong>Play Controls: </strong> </legend>
+                <button id = "StartButton"> Start </button> <button id = "StopButton"> Stop </button>
+            </fieldset>
+
+            <fieldset id = "Speed"> 
+                <legend><strong> Speed:</strong> </legend>
+                <select id = "WpmDropDown"> 
+                        <option>350 wpm</option>
+                        <option>50 wpm</option>
+                        <option>300 wpm</option>                      
+                        <option>400 wpm</option>
+                        <option>450 wpm</option>
+                        <option>500 wpm</option>
+                </select>
+            </fieldset>
+
+            <fieldset id = "Size"> 
+                <legend><strong> Size: </strong> </legend>
+                <input type = "radio" name = "rad" value = "Medium" > Medium 
+                <input type = "radio" name = "rad" value = "Big"> Big
+                <input type = "radio" name = "rad" value = "Bigger"> Bigger
+            </fieldset>
+        </div>
+
+        <fieldset >   <!-- Input Text section -->
+            <legend id = "InputText"> <strong> Input Text: </strong> </legend>
+            <textarea  id = "TextLocation" rows="10" cols="80">
+                
+            </textarea>
+        </fieldset>
+
+        <div id = "validators"> 
+            <a href="https://validator.w3.org/"> <img src="w3c-html-blue.png" alt="HTML"  width = "70" /> </a>
+            <a href="https://jigsaw.w3.org/css-validator/"> <img src=  "w3c-css-blue.png" alt="CSS" width = "70"  /> </a>
+            <a href="https://webster.cs.washington.edu/jslint/?referer"> <img src=  "w3c-js-blue.png" alt="CSS" width = "70" /> </a>
+        </div>
+
+
+
+    </body> 
+    </html>

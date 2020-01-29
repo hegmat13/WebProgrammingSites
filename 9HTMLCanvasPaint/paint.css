@@ -1,0 +1,57 @@
+/* Name: Matthew Heger
+    Class: CSC 337 
+   Date: 4/4/2019
+   This is the CSS file for the Paint CSC 337 Assignment  */
+
+body { /* Entire body Style */ 
+
+    background-color: #222222; 
+    font-family: Helvetica, sans-serif;
+    color: white;
+
+}
+
+#title{ /* style for the title text */ 
+
+    font-size: 36px;
+    letter-spacing: 3px;
+    text-align: center;
+
+}
+
+#elements{ /* Make the mode buttons display in a flex */ 
+
+    display: flex;
+    justify-content: center;
+
+}
+
+#gradient { /* Add margins to the gradient */ 
+    margin: 15px; 
+}
+
+#plusandminus { /* make a style for the plus and minus buttons */ 
+    display: flex; 
+    align-items: flex-end;
+    margin: 15px; 
+    margin-top: 0; 
+}
+
+#pensize { /* Create margins for the pensize */ 
+    margin: 5px; 
+}
+
+#modebuttons {  /* Create style for the mode buttons */ 
+    margin: 15px;
+    margin-top: 40px;  
+    display: flex; 
+    flex-direction: column; 
+}
+
+#modebuttons > button {
+    margin: 5px; 
+    width: 80px; 
+}
+#writing{
+  margin-left: 15px;
+}

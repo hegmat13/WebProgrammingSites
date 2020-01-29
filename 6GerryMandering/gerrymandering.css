@@ -1,0 +1,22 @@
+.dem, .gop {
+	height: 30px;
+	margin-bottom: 5px;
+}
+ 
+.dem {   /* Democrat class */ 
+	background-color: blue; 
+}
+
+.gop {   /* Republican class */ 
+	background-color: red;
+}
+
+body {  /* Make everything in body 80% wide */ 
+	width: 80%;
+	margin: auto;
+}
+
+#searchdiv, h1 {
+	text-align: center;
+}
+

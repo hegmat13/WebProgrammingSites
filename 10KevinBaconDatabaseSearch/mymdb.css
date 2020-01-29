@@ -1,0 +1,76 @@
+/* Name: Matthew Heger
+    Class: CSC 337 
+   Date: 4/14/2019
+   This is the CSS file for the mymdb CSC 337 Assignment  */
+
+
+body { /*Set the backgorund color of the body */
+    background-color: gray; 
+    
+}
+
+#body { 
+    width: 80%; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white; 
+    font-family: Verdana; 
+}
+
+#bannertop { /*Banner style */
+    background-image: url("http://allisonobourn.com/337/images/kevinbacon/banner-background.png"); 
+    display: flex; 
+    padding: 10px; 
+}
+
+#bannertext { /*Text of the banner style  */
+    margin: 0px; 
+    margin-top: 30px; 
+    margin-left: 10px; 
+    color: white; 
+}
+
+.pagetext { 
+    text-align: center; 
+}
+
+#search { /* style of both of the search boxes  */
+    width: 60%; 
+    margin-left: 150px; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+fieldset { /* Set the margins of the fieldset  */
+    margin: 20px; 
+}
+
+#bannerbottom { /* Style of the bottom banner */
+    background-image: url("http://allisonobourn.com/337/images/kevinbacon/banner-background.png"); 
+    display: flex; 
+    padding: 10px; 
+}
+
+#kevinimage { /* style for kevin bacon picture */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px; 
+}
+
+#table { /* style for the movies data table div*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%; 
+}
+
+table { /* style for the actual table  */
+    width: 100%; 
+    text-align: center; 
+    border-style: solid; 
+    border-width: 1pt; 
+    border-color: black; 
+}

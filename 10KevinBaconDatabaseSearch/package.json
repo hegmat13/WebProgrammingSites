@@ -1,0 +1,29 @@
+{
+  "name": "ravewebsite",
+  "version": "1.0.0",
+  "description": "Final CSC 337 Project ",
+  "main": "mymdb_service.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "fs": "^0.0.1-security",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hegmat13/csc337final_raves.git"
+  },
+  "keywords": [
+    "Raves"
+  ],
+  "author": "Matthew and Yasser",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/hegmat13/csc337final_raves/issues"
+  },
+  "homepage": "https://github.com/hegmat13/csc337final_raves#readme"
+}

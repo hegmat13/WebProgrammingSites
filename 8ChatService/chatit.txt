@@ -1,0 +1,102 @@
+
+"use strict"; 
+(function() { 
+     let flag = 0; 
+     window.onload = function() {
+     let sendb = document.getElementById("Send");
+     sendb.onclick = SendFunction;
+     GetFunction(); 
+
+     setInterval(GetFunction, 5000); 
+     };
+     
+     /**
+     //this function for the statuschek
+     */
+     function checkStatus(response) {    //Checks for errors on the page 
+         if (response.status >= 200 && response.status < 300) {  
+             return response.text();
+         }else if(response.status == 404) {    //404 error when there is no data
+             return Promise.reject(new Error("sorry we do not have any data"));
+         }else {     
+             return Promise.reject(new Error(response.status+": "+response.statusText)); 
+         } 
+     }
+     /**
+     //this function goes one when tha page is loading
+     */
+     function SendFunction() {
+         let NAME = document.getElementById("Name").value;
+         let MESSAGE = document.getElementById("Message").value;
+         let Jmessage = { Name : NAME,
+             Comment : MESSAGE
+         }
+         const fetchOptions = {
+             method : 'POST',
+             headers : {
+                 'Accept': 'application/json',
+                 'Content-Type' : 'application/json'
+             },
+             body : JSON.stringify(Jmessage)
+             
+         };
+         console.log(JSON.stringify(Jmessage));
+         
+         let url = "http://localhost:3000";  
+
+         fetch(url, fetchOptions)
+         .then(checkStatus)
+         .then(function(responseText) {
+             console.log(responseText);
+         })
+         .catch(function(error) {
+             console.log(error);
+         } );
+
+     }
+
+      function GetFunction(){
+
+        let url = "http://localhost:3000";
+
+        fetch(url) //Start fetching description for description mode 
+        .then(checkStatus)
+        .then(function (responseText) {
+        let MessageBox = document.getElementById("Allmessages");
+        if(flag == 1) {
+            MessageBox.innerHTML = ""; 
+        }
+
+        let text = JSON.parse(responseText); 
+        
+        console.log(text["messages"][0].name); 
+        for(let i = 0; i < text["messages"].length; i++) {
+        let message = document.createElement("div");  
+        let Name = document.createElement("div"); 
+        let comment = document.createElement("div"); 
+        Name.id = "NameText"; 
+        comment.id = "CommentText"; 
+
+        message.className = "message"; 
+        Name.innerHTML = text["messages"][i].name; 
+        comment.innerHTML = ": " + text["messages"][i].comment; 
+        
+        message.appendChild(Name); 
+        message.appendChild(comment); 
+
+        MessageBox.appendChild(message); 
+        flag = 1; 
+        
+        }
+
+        console.log(text); 
+        console.log(responseText); 
+        
+
+        })
+        .catch(function (error) {  //Catch any errors sent from the  Web service 
+       
+        });
+
+      }
+}) ();

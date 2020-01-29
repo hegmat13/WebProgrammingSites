@@ -1,0 +1,3 @@
+Kevin Bacon id = 22591
+John Belushi id = 36005
+movie_id = 17173 (Animal House)

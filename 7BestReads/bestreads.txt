@@ -1,0 +1,178 @@
+/* Name: Matthew Heger
+   Class: CSC 337 
+   Date: 3/19/2019
+   This is the Javascript file for the BestReads CSC 337 Assignment  */
+   "use strict"; 
+
+
+   (function() { //This is the main function of the whole code 
+   
+   
+       window.onload = function() { 
+       let home = document.getElementById("back"); 
+       Begin();      
+       home.onclick = Home; 
+       };
+
+       function checkStatus(response) {    //Checks for errors on the page 
+         if (response.status >= 200 && response.status < 300) {  
+             return response.text();
+         } else if(response.status == 404) {    //404 error when there is no data
+             return Promise.reject(new Error("sorry we do not have any data"));
+         } else {     
+             if (response.status == 410) {  //Print 410 error with description 
+
+             }
+             if(response.status != 410) {   //Print all other errors 
+
+             }
+             return Promise.reject(new Error(response.status+": "+response.statusText)); 
+         } 
+     }
+        function Begin() {
+            let url = "http://localhost:3000?mode=books&title=harrypotter";  //info mode url
+
+            fetch(url)
+            .then(checkStatus)
+            .then(function(responseText) {
+                console.log(responseText); 
+                var Allbooks = document.getElementById("allbooks"); 
+
+                var info = JSON.parse(responseText); 
+                console.log(info.books[0]); 
+
+                for(var i = 0; i < info.books.length; i++) { 
+                var book = document.createElement("div"); 
+
+                if(i < 10) {
+                    book.id = info.books[i].folder + "0" + i; 
+                }
+                else {
+                    book.id = info.books[i].folder + i; 
+                }
+
+                book.onclick = Book;
+                var image = document.createElement("IMG"); 
+                if(i < 10) {
+                    image.id = "image" + "0" + i; 
+                }
+                else {
+                    image.id = "image" + i; 
+                }
+                image.src = "../Homework8/books/" + info.books[i].folder + "/cover.jpg"; 
+
+                console.log(image.src);
+                book.appendChild(image); 
+                    
+                var title = document.createElement("p"); 
+                if(i < 10) {
+                    title.id = "title" + "0" + i; 
+                }
+                else {
+                    title.id = "title" + i; 
+                }
+                title.innerHTML = info.books[i].title; 
+
+                book.appendChild(title); 
+
+                Allbooks.appendChild(book); 
+                }
+
+            })
+            .catch(function(error) {  //Catch any errors sent from the  Web service 
+
+            });
+        }
+
+        function Home() {
+            document.getElementById("cover").innerHTML = ""; 
+            document.getElementById("title").innerHTML = ""; 
+            document.getElementById("author").innerHTML = ""; 
+            document.getElementById("stars").innerHTML = "";
+            document.getElementById("description").innerHTML = "";    
+            document.getElementById("reviews").innerHTML = "";  
+
+            Begin(); 
+
+        }
+        
+        function Book() {
+            console.log(this.id); 
+            var number = this.id[this.id.length - 2] + this.id[this.id.length - 1]; 
+            var title = document.getElementById("title" + number);
+            var source = document.getElementById("image" + number).src;
+            var image = document.getElementById("cover"); 
+            var Newtitle = document.getElementById("title"); 
+
+            
+            image.src = source; 
+            Newtitle.innerHTML = title.innerHTML; 
+
+            let url = "http://localhost:3000?mode=info&title=" + this.id.slice(0, -2);  
+        
+            console.log(url); 
+            fetch(url)
+                .then(checkStatus)
+                .then(function(responseText) {
+                    console.log(responseText); 
+
+                    var info = JSON.parse(responseText); 
+                    console.log(info.author); 
+                    document.getElementById("author").innerHTML = info.author; 
+                    document.getElementById("stars").innerHTML = info.stars; 
+                })
+                .catch(function(error) {  //Catch any errors sent from the  Web service 
+    
+                });
+
+            url = "http://localhost:3000?mode=description&title=" + this.id.slice(0, -2);  
+        
+            console.log(url); 
+            fetch(url)
+                .then(checkStatus)
+                .then(function(responseText) {       
+                    document.getElementById("description").innerHTML = responseText;   
+                })
+                .catch(function(error) {  //Catch any errors sent from the  Web service 
+        
+                });
+            
+            url = "http://localhost:3000?mode=reviews&title=" + this.id.slice(0, -2);  
+        
+            console.log(url); 
+            fetch(url)
+                .then(checkStatus)
+                .then(function(responseText) {       
+                    console.log(responseText);
+                   
+                    var AllReviews = JSON.parse(responseText);
+
+                    console.log(AllReviews.reviews.length);
+                    
+                    for(var i = 0; i < AllReviews.reviews.length; i++){ 
+                        console.log("inside"); 
+                        var name = document.createElement("h3"); 
+                        name.innerHTML = AllReviews.reviews[i].name + " <span>" + AllReviews.reviews[i].stars + "</span>"; 
+
+                        var details = document.createElement("p");
+                        details.innerHTML = AllReviews.reviews[i].review; 
+
+                        console.log(name); 
+
+                        var reviewsDiv = document.getElementById("reviews"); 
+                        reviewsDiv.appendChild(name); 
+                        reviewsDiv.appendChild(details); 
+                    }
+                    
+                })
+                .catch(function(error) {  //Catch any errors sent from the  Web service 
+        
+                });                
+
+
+            document.getElementById("allbooks").innerHTML = ""; 
+            var image = document.getElementById("cover"); 
+
+        }
+
+   }) ();

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<!--Name: Matthew Heger
+   Class: CSC 337 
+   Date: 2/6/2019
+   This is the Javascript file for the guessingGame  -->
+<!--  -->
+
+<html lang = "en-us">
+	<head>
+		<title>Guessing Game</title>
+
+		<meta charset="utf-8" />
+        <link href="guessingGame.css" type="text/css" rel="stylesheet" />
+        <script src = "guessingGame.js" ></script>
+	</head>
+
+    <body> 
+        <h1> Guess a Number Game </h1>
+    
+        <div id = "flex">  
+        <div> 
+        <p> Welcome to the CSC 337 guess a number game page! Enter a range into the boxes below and hit the start button to begin the game. </p>
+        </div>
+
+        <div id = "Max"> 
+             Minimum:<input name = "Minimum:" id = "Minimum"/>   <!-- Max and Min input fields -->
+             Maximum:<input name = "Maximum:" id = "Maximum"/>
+             <button id = "Start"> start </button> 
+        </div>
+        </div>
+
+        <div id = "flex2">
+        <div id = "guess"> 
+            Your guess:<input name = "Guess" id = "GuessNum"/> <button id = "Guess"> guess! </button> 
+        </div>
+
+        <div id = "previous">
+           <strong> Your previous guesses:</strong> 
+
+           <p id = "Output"></p>   <!-- Text field edited by the Javascript file -->
+        </div> 
+        </div>
+
+    </body> 
+    </html>

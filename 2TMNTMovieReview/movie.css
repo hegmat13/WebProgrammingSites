@@ -1,0 +1,176 @@
+
+body {
+    background-image: url("https://webster.cs.washington.edu/images/moviebg.png"); 
+    width: 100%; 
+    height: 100%; 
+}
+
+#banner {
+    position: fixed; 
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 0px; 
+    border: 0px; 
+    margin-top: 0; 
+    margin-bottom: 0; 
+}
+
+#bannerbackground {
+    position: fixed; 
+    margin: 0; 
+    padding: 0; 
+    border: 0; 
+    width: 100%; 
+    height: 50px; 
+}
+
+#background h2 {
+ text-align: center; 
+ font-family: Georgia; 
+ font-size: 24pt; 
+ text-shadow: 3px 3px #999999; 
+ margin: 0; 
+ padding: 75px; 
+}
+
+#content {
+ margin-left: 29%;  
+ border-radius: 20px; 
+ width: 800px; 
+ padding: 0; 
+ box-shadow: 5px 5px 5px gray;
+ background-color: #A2B964;
+
+}
+
+#content #top #rating { 
+font-size: 48pt; 
+color: red; 
+position: relative; 
+bottom: 14px; 
+left: 15px; 
+
+}
+
+#content #top {
+    background-image: url("https://webster.cs.washington.edu/images/rottenlargebg.png"); 
+    border-top-left-radius: 20px; 
+    background-size: 100% 70px; 
+    margin-right: 22.5%;
+    height: 70px; 
+    padding: 0; 
+}
+
+#content #turtlepic {
+    border-top-right-radius: 20px; 
+    float: right;
+    top: 0; 
+    right: 0; 
+    width: 30%; 
+}
+
+#content #top #rotten {
+    height: 70px; 
+    border-top-left-radius: 20px; 
+}
+
+
+#content #Reviews {
+    display: flex; 
+    padding-left: 0; 
+    padding-top: 0px; 
+    padding-right: 10px; 
+    margin-top: 0; 
+    flex-direction: row; 
+    background-color:#EEEEEE; 
+    width: 550px; 
+    height: 1040px; 
+}
+
+
+#Reviewsleft {
+    display: flex; 
+    flex-direction: column; 
+    padding: 8pt; 
+    width: 1200px; 
+}
+
+#content #Reviews #Reviewsright {
+    display: flex; 
+    flex-direction: column; 
+    padding: 8pt; 
+}
+
+#content #pagetext {
+    position: relative; 
+    float: right; 
+    bottom:  720px; 
+    left: 20px;
+    width: 250px; 
+}
+ .flexperson {
+    width: 100%; 
+}
+
+.flexquote {
+    width: 100%; 
+    font-size: 10pt; 
+    background-color: #FFFFFF; 
+    border-radius: 20px; 
+    border-style: solid; 
+    border-width: 2pt; 
+    border-color: #CCCCCC; 
+    padding: 3pt; 
+}
+
+.thumbnail {
+    padding: 5px; 
+    float: left; 
+}
+
+#quote { 
+    padding: 20px; 
+}
+
+
+#content #Reviews #Reviewsright .flexperson  {
+    width: 100%; 
+}
+
+#content #reviewnumber { 
+    position: relative; 
+    left: 400px; 
+    margin: 0; 
+    padding: 0; 
+}
+
+
+ul {
+    list-style-type: none; 
+    padding: 0; 
+}
+
+dt {
+    font-weight: bold; 
+    font-size: 10pt; 
+}
+
+dd {
+    font-size: 10pt; 
+    padding-bottom: 10pt; 
+}
+
+#validator {
+    display: flex; 
+    flex-direction: column; 
+    position: fixed; 
+    right: 0; 
+    bottom: 0; 
+}
+
+body {
+    margin-top: 0;
+    margin-left: 0; 
+}
+
+

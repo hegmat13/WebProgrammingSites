@@ -1,0 +1,94 @@
+/*
+Allison Obourn
+CSC 337, Spring 2019
+Lecture 20
+
+Connect to the world database and when the user makes a get request
+returns all data about cities named London.
+*/
+
+const express = require("express");
+const app = express();
+var mysql = require('mysql');
+let Response = "";
+
+app.use(express.static('public'));
+let first = "";
+let last = "";
+let id;
+
+// connection object
+var con = mysql.createConnection({
+    host: "mysql.allisonobourn.com",
+    database: "csc337imdb_small",
+    user: "csc337homer",
+    password: "d0ughnut",
+    debug: "true"
+});
+console.log("connected");
+
+
+
+app.get('/', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    first = req.query.first;
+    last = req.query.last;
+    id = req.query.id;
+    mode = req.query.mode;
+
+    console.log(mode); 
+    console.log(id);
+    console.log("Connected!"); 
+
+        
+        con.query("SELECT * from actors WHERE last_name = '" + last + "'",
+            function (err, result, fields) {
+                if (err) throw err;
+                console.log("Result: " + result[0]["id"]);
+                console.log(result[0]["first_name"].includes(first));
+                let MaxFilms = 0;
+
+
+                for (let i = 0; i < result.length; i++) {
+                    result[0]["first_name"].includes(first)
+                    if (result[i]["first_name"].substring(0, first.length).includes(first)) {
+
+                        if (result[i]["film_count"] > MaxFilms) {
+                            console.log(result[i]);
+                            id = result[i]["id"];
+                            MaxFilms = result[i]["film_count"];
+                        }
+                        if (result[i]["film_count"] == MaxFilms) {
+                            if (result[i]["id"] < id) {
+                                id = result[i]["id"];
+                            }
+                        }
+                    }
+                }
+
+                if (mode == 1) {
+                con.query("SELECT name, year From actors a JOIN roles r ON r.actor_id = a.id JOIN movies m ON m.id = r.movie_id WHERE a.id = " + id,
+                function (err, result, fields) {
+                    if (err) throw err;
+                    console.log(result);
+                    res.send(JSON.stringify(result));
+                });
+            }
+                if(mode == 2) {
+                        con.query("SELECT m.name From actors a JOIN actors b ON b.id = 366173 JOIN roles r ON a.id = r.actor_id JOIN roles s ON b.id = s.actor_id JOIN movies m ON r.movie_id = m.id  JOIN movies n ON s.movie_id = n.id WHERE a.id = 22591 AND r.movie_id = s.movie_id",
+                        function (err, result, fields) {
+                            if (err) throw err;
+                            console.log(result);
+                            res.send(JSON.stringify(result));
+                    });
+                } 
+               
+
+            
+
+        });
+});
+
+app.listen(3000); //Specifie the port number 
+

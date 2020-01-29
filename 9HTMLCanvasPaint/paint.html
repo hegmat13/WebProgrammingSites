@@ -1,0 +1,38 @@
+<!-- Name: Matthew Heger
+    Class: CSC 337 
+   Date: 4/4/2019
+   This is the HTML file for the Paint CSC 337 Assignment 
+-->
+<!DOCTYPE html>
+<html lang="en-us">
+
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="paint.css" />
+		<script src="paint.js"></script>
+		<title>Paint</title>
+	</head>
+	<body>
+	<p id = "title"><strong> CSC 337 Paint</strong></p>
+	<div id = "elements">
+		<div><canvas id = "canvas" width="700" height="500"></canvas></div> <!-- Create the canvas-->
+		<div id = "options">
+            <div id = "gradientdiv"><canvas id = "gradient" width="100" height="100"></canvas></div>
+            <div id = "writing">pen size:</div> <!-- Create the pen size text-->
+            <div id = "plusandminus">
+            <div ><button id = "plus">+</button></div>  <!-- Create the plus button-->
+            <div ><button id = "minus">-</button></div> <!-- Create the minus button-->
+                <canvas id = "pensize" width="50" height="50"></canvas> <!-- Create the pen size canvas-->
+            </div>
+            <div id = "modebuttons"> <!-- Create section for the controls-->
+                <button id = "pen">pen</button> <!-- Create the pen button -->
+                <button id = "circles">circles</button> <!-- Create the circles button -->
+                <button id = "squares">squares</button> <!-- Create the squares button -->
+                <button id = "lines">lines</button> <!-- Create the lines button -->
+                <button id = "clear">clear</button> <!-- Create the clear button -->
+            </div>
+		</div>
+	</div>
+		
+	</body>
+</html>
